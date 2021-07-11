@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Clientes
+{% endblock %}
+
+{% block container %}
+    <!-- emmet: meta lenguaje -->
+    <div class="row">
+        <!-- formulario -->
+        <div class="col-2">
+            <form action="{% url 'clientes' %}" method="post">
+                {% csrf_token %}
+                <div class="mb-2">
+                    <label for="nombre">Nombre</label>
+                    <input type="text" name="nombre" id="nombre" class="form-control" required autofocus>
+                </div>
+
+                <div class="mb-2">
+                    <label for="apellido">Apellido</label>
+                    <input type="text" name="apellido" id="apellido" class="form-control" required>
+                </div>
+
+                <div class="mb-2">
+                    <label for="direccion">Direccion</label>
+                    <input type="text" name="direccion" id="direccion" class="form-control" required>
+                </div>
+
+                <div class="mb-2">
+                    <label for="fechanacimiento">Fecha de Nacimiento</label>
+                    <input type="date" name="fechanacimiento" id="fechanacimiento" class="form-control" required>
+                </div>
+
+                <div class="mb-2">
+                    <label for="telefono">Telefono</label>
+                    <input type="text" name="telefono" id="telefono" class="form-control" required>
+                </div>
+
+                <div class="mb-2">
+                    <label for="correo">Correo</label>
+                    <input type="email" name="correo" id="correo" class="form-control" required>
+                </div>
+
+                <div class="mb-2">
+                    <input type="submit" class="btn btn-success" value="Registrar cliente">
+                </div>
+            </form>
+        </div>
+
+        <!-- jQuery -->
+
+        <!-- datos -->
+        <div class="col-9">
+            {% if messages %}
+                <div class="alert alert-success mb-2">
+                {% for message in messages %}
+                    {{ message }}
+                {% endfor %}
+                </div>
+            {% endif %}
+
+            <form action="" method="get">
+                <input type="search" name="q" value="{{ q|default_if_none:'' }}" class="form-control" placeholder="Buscar">
+            </form>
+
+            <h2 class="mt-2">Clientes: {{ clientes.count }}</h2>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th>Direccion</th>
+                        <th>Fecha de Nacimiento</th>
+                        <th>Telefono</th>
+                        <th>Correo</th>
+                        <!--<th>Acciones</th>-->
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for c in clientes %}
+                    <tr>
+                        <td>{{ c.nombre }}</td>
+                        <td>{{ c.apellido }}</td>
+                        <td>{{ c.direccion }}</td>
+                        <td>{{ c.fechanacimiento }}</td>
+                        <td>{{ c.telefono }}</td>
+                        <td>{{ c.correo }}</td>
+                        <!--<td>
+                            <a href="" class="text-danger">Eliminar</ahref></a>
+                            <a href="" class="text-success">Editar</ahref></a>
+                        </td>-->
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="text-danger text-center">No se encontraron resultados</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
+
+{% block js %}
+<script>
+    $(function () {
+        
+        setTimeout(() => {
+            $('.alert').slideUp(function () {
+                $(this).remove();
+            });
+        }, 3000)
+
+    });
+</script>
+{% endblock  %}
+
